@@ -21,14 +21,7 @@ const checkAssignStatus = async function (userId) {
             userId
         })
     })
-        .then(res => {
-
-            console.log(res)
-
-
-            let responseData = JSON.parse(res.data);
-            return responseData;
-        })
+        .then(res => res.json())
         .catch((error) => {
             console.log('Error log response:', error);
         });
