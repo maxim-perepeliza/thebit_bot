@@ -44,12 +44,7 @@ const assignEmail = async function (userId, email) {
             email
         })
     })
-        .then(res => {
-            console.log(res)
-
-            let responseData = JSON.parse(res.data);
-            return responseData;
-        })
+        .then(res => res.json())
         .catch((error) => {
             console.log('Error log response:', error);
         });
@@ -71,10 +66,7 @@ const unassignUser = async function (userId) {
             userId
         })
     })
-        .then(res => {
-            let responseData = JSON.parse(res.data);
-            return responseData;
-        })
+        .then(res => res.json())
         .catch((error) => {
             console.log('Error log response:', error);
         });
@@ -134,7 +126,7 @@ bot.on("text", async (ctx) => {
     }
 
     let userAlreadyAssigned = await checkAssignStatus(userId);
-    if (userAlreadyAssigned.code === 'error') {
+    if (typeof userAlreadyAssigned.code !== 'undefined' && userAlreadyAssigned.code === 'error') {
         responseMessage = userAlreadyAssigned.message;
     } else {
         if (userAlreadyAssigned.status === 'assigned') {
@@ -148,7 +140,7 @@ bot.on("text", async (ctx) => {
             });
         } else {
             let assignResult = await assignEmail(userId, email);
-            if (assignResult.code === 'error') {
+            if (typeof assignResult.code !== 'undefined' && assignResult.code === 'error') {
                 responseMessage = assignResult.message;
             } else {
                 if (assignResult.status === 'success') {
