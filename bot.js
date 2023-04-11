@@ -22,6 +22,10 @@ const checkAssignStatus = async function (userId) {
         })
     })
         .then(res => {
+
+            console.log(res)
+
+
             let responseData = JSON.parse(res.data);
             return responseData;
         })
@@ -48,6 +52,8 @@ const assignEmail = async function (userId, email) {
         })
     })
         .then(res => {
+            console.log(res)
+
             let responseData = JSON.parse(res.data);
             return responseData;
         })
