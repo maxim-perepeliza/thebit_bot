@@ -20,9 +20,14 @@ const checkAssignStatus = async function (userId) {
         body: JSON.stringify({
             userId
         })
-    }).catch((error) => {
-        console.log('Error log response:', error);
-    });
+    })
+        .then(res => {
+            let responseData = JSON.parse(res.data);
+            return responseData;
+        })
+        .catch((error) => {
+            console.log('Error log response:', error);
+        });
 
     console.log(response)
 
@@ -41,9 +46,14 @@ const assignEmail = async function (userId, email) {
             userId,
             email
         })
-    }).catch((error) => {
-        console.log('Error log response:', error);
-    });
+    })
+        .then(res => {
+            let responseData = JSON.parse(res.data);
+            return responseData;
+        })
+        .catch((error) => {
+            console.log('Error log response:', error);
+        });
 
     console.log(response)
 
@@ -125,20 +135,27 @@ bot.on("text", async (ctx) => {
     }
 
     let userAlreadyAssigned = await checkAssignStatus(userId);
-
-    if (userAlreadyAssigned.status === 'assigned') {
-        return ctx.telegram.sendMessage(userId, `This telegram account already assigned to email ${userAlreadyAssigned.email}`, {
-            reply_markup: {
-                resize_keyboard: true,
-                inline_keyboard: [
-                    [{ text: "Unassign", callback_data: "unassign_telegram" }]
-                ],
-            },
-        });
+    if (userAlreadyAssigned.code === 'error') {
+        responseMessage = userAlreadyAssigned.message;
     } else {
-        let assignResult = await assignEmail(userId, email);
-        if (assignResult.status === 'success') {
-            responseMessage = 'Email successfully verified. This telegram account is assigned to entered email.';
+        if (userAlreadyAssigned.status === 'assigned') {
+            return ctx.telegram.sendMessage(userId, `This telegram account already assigned to email ${userAlreadyAssigned.email}`, {
+                reply_markup: {
+                    resize_keyboard: true,
+                    inline_keyboard: [
+                        [{ text: "Unassign", callback_data: "unassign_telegram" }]
+                    ],
+                },
+            });
+        } else {
+            let assignResult = await assignEmail(userId, email);
+            if (assignResult.code === 'error') {
+                responseMessage = assignResult.message;
+            } else {
+                if (assignResult.status === 'success') {
+                    responseMessage = 'Email successfully verified. This telegram account is assigned to entered email.';
+                }
+            }
         }
     }
 
