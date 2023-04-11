@@ -95,18 +95,13 @@ bot.command("start_verify", (ctx) => {
 });
 
 // On handlers
-bot.on("callback_query", (ctx) => {
+bot.on("callback_query", async (ctx) => {
     let branch = ctx.callbackQuery.data;
     let userId = ctx.from.id;
     if (branch == 'unassign_telegram') {
 
-        let userUnassignStatus = unassignUser(userId);
-
-        if (userUnassignStatus.status === 'success') {
-            responseMessage = 'Successfully unassigned.';
-        } else {
-            responseMessage = userUnassignStatus.message ? userUnassignStatus.message : 'Something went wrong. We will try to fix it ASAP.';
-        }
+        let userUnassignStatus = await unassignUser(userId);
+        responseMessage = userUnassignStatus.message ? userUnassignStatus.message : 'Something went wrong. We will try to fix it ASAP.';
         return ctx.reply(responseMessage);
 
     } else {
