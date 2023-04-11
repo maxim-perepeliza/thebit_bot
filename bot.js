@@ -1,6 +1,5 @@
 require("dotenv").config();
-const axios = require('axios')
-
+const fetch = require('node-fetch');
 const { Telegraf } = require("telegraf");
 
 // Создать бота с полученным ключом
