@@ -146,7 +146,7 @@ bot.on("text", async (ctx) => {
                 if (assignResult.status === 'success') {
                     responseMessage = 'Email successfully verified. This telegram account is assigned to entered email.';
                 } else {
-                    responseMessage = userUnassignStatus.message ? userUnassignStatus.message : responseMessage;
+                    responseMessage = assignResult.message ? assignResult.message : responseMessage;
                 }
             }
         }
