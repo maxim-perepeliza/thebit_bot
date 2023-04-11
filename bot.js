@@ -105,7 +105,7 @@ bot.on("callback_query", (ctx) => {
         if (userUnassignStatus.status === 'success') {
             responseMessage = 'Successfully unassigned.';
         } else {
-            responseMessage = 'Something went wrong. We will try to fix it ASAP.';
+            responseMessage = userUnassignStatus.message ? userUnassignStatus.message : 'Something went wrong. We will try to fix it ASAP.';
         }
         return ctx.reply(responseMessage);
 
@@ -145,6 +145,8 @@ bot.on("text", async (ctx) => {
             } else {
                 if (assignResult.status === 'success') {
                     responseMessage = 'Email successfully verified. This telegram account is assigned to entered email.';
+                } else {
+                    responseMessage = userUnassignStatus.message ? userUnassignStatus.message : responseMessage;
                 }
             }
         }
