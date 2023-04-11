@@ -115,7 +115,7 @@ bot.on("callback_query", (ctx) => {
 });
 
 // Обработчик простого текста
-bot.on("text", (ctx) => {
+bot.on("text", async (ctx) => {
     let userId = ctx.from.id;
     let responseMessage = 'Something went wrong. We will try to fix it ASAP.';
 
@@ -124,7 +124,7 @@ bot.on("text", (ctx) => {
         return ctx.reply('Invalid email address');
     }
 
-    let userAlreadyAssigned = checkAssignStatus(userId);
+    let userAlreadyAssigned = await checkAssignStatus(userId);
 
     if (userAlreadyAssigned.status === 'assigned') {
         return ctx.telegram.sendMessage(userId, `This telegram account already assigned to email ${userAlreadyAssigned.email}`, {
@@ -136,7 +136,7 @@ bot.on("text", (ctx) => {
             },
         });
     } else {
-        let assignResult = assignEmail(userId, email);
+        let assignResult = await assignEmail(userId, email);
         if (assignResult.status === 'success') {
             responseMessage = 'Email successfully verified. This telegram account is assigned to entered email.';
         }
