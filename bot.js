@@ -24,6 +24,8 @@ const checkAssignStatus = async function (userId) {
         console.log('Error log response:', error);
     });
 
+    console.log(response)
+
     return response;
 }
 
@@ -42,6 +44,8 @@ const assignEmail = async function (userId, email) {
     }).catch((error) => {
         console.log('Error log response:', error);
     });
+
+    console.log(response)
 
     return response;
 }
